@@ -324,6 +324,12 @@ section.panel:hover .panel-bg{transform:scale(1.02)}
   margin-top:0.5rem;
 }
 .btn-submit:hover{opacity:0.9;transform:translateY(-1px)}
+.btn-submit:disabled{opacity:0.6;cursor:wait;transform:none}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none}
+.form-msg{margin-top:1rem;padding:0.85rem 1rem;border-radius:10px;font-size:0.95rem;line-height:1.4;background:rgba(255,255,255,0.15);color:#fff}
+.form-msg.ok{background:rgba(46,160,90,0.35)}
+.form-msg.error{background:rgba(220,70,70,0.4)}
+.form-msg[hidden]{display:none}
 
 /* FOOTER */
 footer{
@@ -532,31 +538,50 @@ footer p{font-size:0.78rem}
     </div>
     <div class="form-card">
       <h3>Solicitá tu presupuesto</h3>
-      <div class="form-group">
-        <label>Nombre completo</label>
-        <input type="text" placeholder="Tu nombre">
-      </div>
-      <div class="form-group">
-        <label>Teléfono o email</label>
-        <input type="text" placeholder="Para contactarte">
-      </div>
-      <div class="form-group">
-        <label>Tipo de servicio</label>
-        <select>
-          <option value="">Seleccioná un servicio</option>
-          <option>Limpieza de hogar</option>
-          <option>Limpieza de oficina / comercio</option>
-          <option>Limpieza de ventanales</option>
-          <option>Centro médico</option>
-          <option>Limpieza profunda</option>
-          <option>Otro</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Mensaje (opcional)</label>
-        <textarea placeholder="Contanos más sobre lo que necesitás..."></textarea>
-      </div>
-      <button class="btn-submit">Enviar solicitud</button>
+      <form id="form-presupuesto" action="https://api.web3forms.com/submit" method="POST">
+        <input type="hidden" name="access_key" value="TU_ACCESS_KEY_AQUI">
+        <input type="hidden" name="subject" value="Nueva consulta de presupuesto - Briseo Limpieza">
+        <input type="hidden" name="from_name" value="Web Briseo Limpieza">
+        <input type="hidden" name="origen" id="campo-origen" value="web">
+        <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <div class="form-group">
+          <label for="f-nombre">Nombre completo</label>
+          <input type="text" id="f-nombre" name="Nombre" placeholder="Tu nombre" required>
+        </div>
+        <div class="form-group">
+          <label for="f-contacto">Teléfono o email</label>
+          <input type="text" id="f-contacto" name="Contacto" placeholder="Para contactarte" required>
+        </div>
+        <div class="form-group">
+          <label for="f-cliente">Tipo de cliente</label>
+          <select id="f-cliente" name="Tipo de cliente" required>
+            <option value="">Seleccioná una opción</option>
+            <option>Hogar</option>
+            <option>Comercio u oficina</option>
+            <option>Centro médico</option>
+            <option>Empresa o industria</option>
+            <option>Organismo o institución</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="f-servicio">Tipo de servicio</label>
+          <select id="f-servicio" name="Tipo de servicio">
+            <option value="">Seleccioná un servicio</option>
+            <option>Limpieza de hogar</option>
+            <option>Limpieza de oficina / comercio</option>
+            <option>Limpieza de ventanales</option>
+            <option>Centro médico</option>
+            <option>Limpieza profunda</option>
+            <option>Otro</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="f-mensaje">Mensaje (opcional)</label>
+          <textarea id="f-mensaje" name="Mensaje" placeholder="Contanos más sobre lo que necesitás..."></textarea>
+        </div>
+        <button type="submit" class="btn-submit" id="btn-enviar">Enviar solicitud</button>
+        <p class="form-msg" id="form-msg" role="status" aria-live="polite" hidden></p>
+      </form>
     </div>
   </div>
 </section>
@@ -580,6 +605,63 @@ window.addEventListener('scroll', () => {
     nav.style.boxShadow = 'none';
   }
 });
+</script>
+<script>
+// Envío del formulario de presupuesto (Web3Forms -> briseotucuman@gmail.com)
+(function () {
+  var form = document.getElementById('form-presupuesto');
+  if (!form) return;
+  var btn = document.getElementById('btn-enviar');
+  var msg = document.getElementById('form-msg');
+  var textoBoton = btn.textContent;
+
+  // Guarda de dónde viene la visita (por ejemplo, el link de Instagram)
+  try {
+    var params = new URLSearchParams(window.location.search);
+    var origen = params.get('utm_source');
+    if (origen) document.getElementById('campo-origen').value = origen;
+  } catch (e) {}
+
+  function mostrar(texto, tipo) {
+    msg.textContent = texto;
+    msg.className = 'form-msg ' + tipo;
+    msg.hidden = false;
+  }
+
+  form.addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    var clave = form.elements['access_key'].value;
+    if (!clave || clave.indexOf('TU_ACCESS_KEY') === 0) {
+      mostrar('El formulario todavía no está configurado. Escribinos a briseotucuman@gmail.com.', 'error');
+      return;
+    }
+    btn.disabled = true;
+    btn.textContent = 'Enviando...';
+    msg.hidden = true;
+
+    fetch(form.action, {
+      method: 'POST',
+      headers: { 'Accept': 'application/json' },
+      body: new FormData(form)
+    })
+      .then(function (res) { return res.json().then(function (data) { return { ok: res.ok, data: data }; }); })
+      .then(function (r) {
+        if (r.ok && r.data && r.data.success) {
+          mostrar('¡Recibimos tu consulta! Te respondemos a la brevedad.', 'ok');
+          form.reset();
+        } else {
+          throw new Error('envio');
+        }
+      })
+      .catch(function () {
+        mostrar('No pudimos enviar tu consulta. Probá de nuevo o escribinos a briseotucuman@gmail.com.', 'error');
+      })
+      .then(function () {
+        btn.disabled = false;
+        btn.textContent = textoBoton;
+      });
+  });
+})();
 </script>
 </body>
 </html>
