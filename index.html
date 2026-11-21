@@ -141,17 +141,9 @@ nav{
 .seccion{padding:clamp(4rem,8vw,7rem) 0}
 .seccion.hielo{background:var(--hielo)}
 .seccion h2{font-size:clamp(1.8rem,3.4vw,2.7rem);font-weight:700;letter-spacing:-.025em;line-height:1.12;max-width:24ch}
-.seccion .intro{color:var(--suave);font-size:1.05rem;max-width:56ch;margin-top:.9rem}
+.seccion .intro{color:var(--suave);font-size:1.05rem;max-width:56ch;margin-top:.9rem;text-wrap:balance}
 .cabecera{margin-bottom:clamp(2rem,4vw,3.2rem)}
 
-/* SECTORES */
-.sectores{border-top:1px solid var(--linea)}
-.sector{
-  display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:1.5rem 3rem;
-  padding:clamp(1.5rem,3vw,2.2rem) 0;border-bottom:1px solid var(--linea);align-items:start;
-}
-.sector h3{font-size:clamp(1.35rem,2.4vw,1.9rem);font-weight:600;letter-spacing:-.02em;line-height:1.2}
-.sector p{color:var(--suave);max-width:58ch;margin-bottom:.8rem}
 .link-cta{color:var(--azul);font-weight:600;text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1.5px}
 .link-cta:hover{color:var(--azul-claro)}
 
@@ -249,7 +241,6 @@ footer a:hover{color:#fff;text-decoration:underline}
 }
 @media(max-width:760px){
   .nav-links{display:none}
-  .sector{grid-template-columns:1fr;gap:.6rem}
   .galeria{grid-template-columns:1fr;max-width:460px}
   .galeria img{aspect-ratio:4/3;object-position:center 30%}
   .pie-grid{grid-template-columns:1fr}
@@ -277,7 +268,6 @@ footer a:hover{color:#fff;text-decoration:underline}
   <a class="nav-logo" href="#inicio"><img src="images/logo.webp" alt="Briseo Limpieza" width="45" height="38"></a>
   <div class="nav-right">
     <div class="nav-links">
-      <a href="#sectores">Sectores</a>
       <a href="#servicios">Servicios</a>
       <a href="#proceso">Proceso</a>
       <a href="#preguntas">Preguntas</a>
@@ -311,51 +301,12 @@ footer a:hover{color:#fff;text-decoration:underline}
   </div>
 </div>
 
-<!-- SECTORES -->
-<section class="seccion" id="sectores">
-  <div class="wrap">
-    <div class="cabecera">
-      <h2>Un servicio para cada tipo de espacio</h2>
-      <p class="intro">Cada lugar tiene sus propias exigencias. Armamos el servicio según quién usa el espacio y cómo funciona.</p>
-    </div>
-    <div class="sectores">
-      <div class="sector">
-        <h3>Centros de salud</h3>
-        <div>
-          <p>Consultorios, clínicas y centros de diagnóstico. Limpieza, desinfección y fumigación con certificado.</p>
-          <a class="link-cta" href="#contacto" data-tipo="Centro médico">Pedir presupuesto</a>
-        </div>
-      </div>
-      <div class="sector">
-        <h3>Organismos públicos</h3>
-        <div>
-          <p>Oficinas del Estado y entidades. Servicio continuo, con presupuestos ajustados al pliego o a los requisitos que nos indiquen.</p>
-          <a class="link-cta" href="#contacto" data-tipo="Organismo o institución">Pedir presupuesto</a>
-        </div>
-      </div>
-      <div class="sector">
-        <h3>Industria y empresas</h3>
-        <div>
-          <p>Plantas, depósitos y oficinas. Planes de limpieza periódica según tu operación y tu horario, incluso fuera del horario comercial.</p>
-          <a class="link-cta" href="#contacto" data-tipo="Empresa o industria">Pedir presupuesto</a>
-        </div>
-      </div>
-      <div class="sector">
-        <h3>Comercios y hogares</h3>
-        <div>
-          <p>Locales, oficinas chicas y viviendas. Servicio regular o puntual, y limpieza profunda para mudanzas o eventos.</p>
-          <a class="link-cta" href="#contacto" data-tipo="Comercio u oficina">Pedir presupuesto</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- SERVICIOS -->
-<section class="seccion hielo" id="servicios">
+<section class="seccion" id="servicios">
   <div class="wrap">
     <div class="cabecera">
       <h2>Todo lo que necesitás, en un solo lugar</h2>
+      <p class="intro">Para centros de salud, organismos públicos, industria, empresas y hogares.</p>
     </div>
     <div class="servicios-grid">
       <div class="servicio">
@@ -403,7 +354,7 @@ footer a:hover{color:#fff;text-decoration:underline}
 </section>
 
 <!-- GALERIA -->
-<section class="seccion" id="trabajos">
+<section class="seccion hielo" id="trabajos">
   <div class="wrap">
     <div class="cabecera">
       <h2>Así cuidamos cada espacio</h2>
@@ -426,7 +377,7 @@ footer a:hover{color:#fff;text-decoration:underline}
 </section>
 
 <!-- PROCESO -->
-<section class="seccion hielo" id="proceso">
+<section class="seccion" id="proceso">
   <div class="wrap">
     <div class="cabecera">
       <h2>Proceso simple y transparente</h2>
@@ -441,7 +392,7 @@ footer a:hover{color:#fff;text-decoration:underline}
 </section>
 
 <!-- PREGUNTAS -->
-<section class="seccion" id="preguntas">
+<section class="seccion hielo" id="preguntas">
   <div class="wrap">
     <div class="cabecera">
       <h2>Preguntas frecuentes</h2>
@@ -546,7 +497,6 @@ footer a:hover{color:#fff;text-decoration:underline}
     <div>
       <h4>Secciones</h4>
       <ul>
-        <li><a href="#sectores">Sectores</a></li>
         <li><a href="#servicios">Servicios</a></li>
         <li><a href="#proceso">Proceso</a></li>
         <li><a href="#preguntas">Preguntas frecuentes</a></li>
@@ -565,16 +515,6 @@ footer a:hover{color:#fff;text-decoration:underline}
 
 <script>
 try { document.getElementById('anio').textContent = new Date().getFullYear(); } catch (e) {}
-
-// Los enlaces de cada sector preseleccionan el tipo de cliente en el formulario
-(function () {
-  var links = document.querySelectorAll('[data-tipo]');
-  var campo = document.getElementById('f-cliente');
-  if (!campo) return;
-  links.forEach(function (a) {
-    a.addEventListener('click', function () { campo.value = a.getAttribute('data-tipo'); });
-  });
-})();
 
 // Envío del formulario de presupuesto (Web3Forms -> briseotucuman@gmail.com)
 (function () {
